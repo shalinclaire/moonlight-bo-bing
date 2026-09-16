@@ -11,26 +11,24 @@ function playDiceSound(){
   if(audioContext.state==="suspended")audioContext.resume();
   const start=audioContext.currentTime;
   const master=audioContext.createGain();
-  master.gain.setValueAtTime(.24,start);
-  master.gain.exponentialRampToValueAtTime(.025,start+1.45);
+  master.gain.setValueAtTime(.34,start);
+  master.gain.exponentialRampToValueAtTime(.018,start+1.48);
   master.connect(audioContext.destination);
-  for(let i=0;i<18;i++){
-    const time=start+.04+i*.073+Math.random()*.035;
-    const osc=audioContext.createOscillator();
-    const gain=audioContext.createGain();
-    osc.type=i%3===0?"triangle":"sine";
-    osc.frequency.setValueAtTime(420+Math.random()*1050,time);
-    osc.frequency.exponentialRampToValueAtTime(150+Math.random()*280,time+.055);
-    gain.gain.setValueAtTime(.0001,time);
-    gain.gain.exponentialRampToValueAtTime(.18+Math.random()*.15,time+.006);
-    gain.gain.exponentialRampToValueAtTime(.0001,time+.07);
-    osc.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.08);
+  const noise=audioContext.createBuffer(1,Math.floor(audioContext.sampleRate*.075),audioContext.sampleRate);
+  const data=noise.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,3);
+  for(let i=0;i<21;i++){
+    const time=start+.025+i*.064+Math.random()*.03;
+    const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();
+    source.buffer=noise;filter.type="bandpass";filter.frequency.value=1900+Math.random()*2600;filter.Q.value=3.8+Math.random()*4;
+    gain.gain.setValueAtTime(.13+Math.random()*.13,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.055);
+    source.connect(filter);filter.connect(gain);gain.connect(master);source.start(time);source.stop(time+.07);
   }
   [1.24,1.32,1.4].forEach((offset,index)=>{
     const time=start+offset,osc=audioContext.createOscillator(),gain=audioContext.createGain();
-    osc.type="triangle";osc.frequency.setValueAtTime(520-index*90,time);osc.frequency.exponentialRampToValueAtTime(120,time+.1);
-    gain.gain.setValueAtTime(.22-index*.04,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.13);
-    osc.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.14);
+    osc.type="sine";osc.frequency.setValueAtTime(2200-index*260,time);osc.frequency.exponentialRampToValueAtTime(620-index*80,time+.075);
+    gain.gain.setValueAtTime(.17-index*.025,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.095);
+    const resonator=audioContext.createBiquadFilter();resonator.type="bandpass";resonator.frequency.value=2800-index*300;resonator.Q.value=5;
+    osc.connect(resonator);resonator.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.1);
   });
 }
 

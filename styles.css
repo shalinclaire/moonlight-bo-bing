@@ -143,9 +143,13 @@ main:after{transform:rotate(90deg)}
 }
 
 /* v11：右上角十字替换为骰子图标 */
-main:before{content:"⚄"!important;width:38px!important;height:38px!important;display:grid;place-items:center;background:#fff1ce!important;border:1px solid rgba(255,235,190,.9)!important;border-radius:8px!important;color:#a80d12;font:700 25px/1 Arial,sans-serif;box-shadow:0 5px 14px rgba(71,0,4,.24)!important;transform:rotate(10deg)!important;top:112px!important;right:8%!important}
+main:before{content:"⚅"!important;width:auto!important;height:auto!important;display:block;background:none!important;border:0!important;border-radius:0!important;color:#fff1ce;font:400 34px/1 Arial,sans-serif;box-shadow:none!important;transform:rotate(8deg)!important;top:112px!important;right:8%!important}
 main:after{display:none!important}
 @media(max-width:800px){main:before{width:32px!important;height:32px!important;font-size:21px!important;top:92px!important;right:7%!important}}
+
+/* v12：八字标题保留明显空格，并在窄屏继续缩小 */
+@media(max-width:800px){.intro h1{font-size:clamp(27px,7.3vw,33px)!important;letter-spacing:.015em!important}.intro h1 em{margin-left:0!important}}
+@media(max-width:360px){.intro h1{font-size:26px!important}}
 
 /* v7：碗与骰子作为整体下移，避开上方背景文案 */
 .game .bowl-wrap{margin-top:82px!important}
