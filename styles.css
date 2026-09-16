@@ -114,3 +114,11 @@ main:after{transform:rotate(90deg)}
 .result,.roll-btn,.game small{position:relative;z-index:7}
 .rules{position:relative;z-index:1}
 @media(max-width:800px){.bowl-wrap{flex-basis:380px}}
+
+/* 移动端合成兼容：正面碗进入正常文档流，避免透明 PNG 在 3D 图层中被截半 */
+.game:not(.top-view) .bowl-wrap{height:auto!important;flex-basis:auto!important}
+.game:not(.top-view) .bowl-front{position:relative!important;display:block!important;inset:auto!important;width:100%!important;height:auto!important;object-fit:initial!important;object-position:initial!important;transform:none!important}
+.game:not(.top-view) .bowl-top{position:absolute!important;inset:0!important}
+.top-view .bowl-wrap{height:auto!important;aspect-ratio:1/1;flex-basis:auto!important}
+.top-view .bowl-front,.top-view .bowl-top{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important}
+@media(max-width:800px){.game:not(.top-view) .bowl-wrap{width:min(430px,96vw)!important}.top-view .bowl-wrap{width:min(430px,96vw)!important}}
