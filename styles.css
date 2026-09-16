@@ -122,3 +122,22 @@ main:after{transform:rotate(90deg)}
 .top-view .bowl-wrap{height:auto!important;aspect-ratio:1/1;flex-basis:auto!important}
 .top-view .bowl-front,.top-view .bowl-top{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important}
 @media(max-width:800px){.game:not(.top-view) .bowl-wrap{width:min(430px,96vw)!important}.top-view .bowl-wrap{width:min(430px,96vw)!important}}
+
+/* v6：初始骰子整体抬高；俯视滚动与落定统一居中 */
+.game:not(.top-view) .dice-stage{transform:translateY(-112px)}
+.top-view .dice-stage{transform:none}
+.top-view .die-1{left:39%;top:40%}
+.top-view .die-2{left:49%;top:37%}
+.top-view .die-3{left:57%;top:43%}
+.top-view .die-4{left:39%;top:52%}
+.top-view .die-5{left:49%;top:50%}
+.top-view .die-6{left:57%;top:55%}
+@media(max-width:800px){
+  .game:not(.top-view) .dice-stage{transform:translateY(-96px)}
+  .top-view .die-1{left:38%;top:40%}
+  .top-view .die-2{left:49%;top:37%}
+  .top-view .die-3{left:57%;top:43%}
+  .top-view .die-4{left:38%;top:52%}
+  .top-view .die-5{left:49%;top:50%}
+  .top-view .die-6{left:57%;top:55%}
+}
