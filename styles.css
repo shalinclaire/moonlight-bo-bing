@@ -98,3 +98,9 @@ main:after{transform:rotate(90deg)}
 /* 两列不等距错落，形成向碗心汇聚的下坠轨迹 */
 .game:not(.top-view) .die-1{left:40%;top:3%;transform:rotate(-17deg)}.game:not(.top-view) .die-2{left:58%;top:11%;transform:rotate(13deg)}.game:not(.top-view) .die-3{left:36%;top:19%;transform:rotate(9deg)}.game:not(.top-view) .die-4{left:61%;top:26%;transform:rotate(-14deg)}.game:not(.top-view) .die-5{left:43%;top:34%;transform:rotate(-10deg)}.game:not(.top-view) .die-6{left:55%;top:38%;transform:rotate(16deg)}
 @media(max-width:800px){.game:not(.top-view) .die-1{left:38%;top:3%}.game:not(.top-view) .die-2{left:58%;top:11%}.game:not(.top-view) .die-3{left:34%;top:19%}.game:not(.top-view) .die-4{left:62%;top:26%}.game:not(.top-view) .die-5{left:41%;top:34%}.game:not(.top-view) .die-6{left:56%;top:38%}}
+
+/* 透明碗图按容器完整显示，避免不同宽高比造成下半部裁切 */
+.bowl-wrap{overflow:visible}
+.bowl-image{inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.game:not(.top-view) .bowl-front,.bowl-top{bottom:0}
+@media(max-width:430px){.bowl-image{left:0;width:100%}}
