@@ -3,13 +3,15 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-const diceBowlSound=new Audio("./dice-bowl-source.mp3?v=20260916-13");
-diceBowlSound.preload="auto";
+const diceRollSound=new Audio("./dice-roll-continuous.mp3?v=20260916-14");
+const ceramicClinkSound=new Audio("./ceramic-bowl-clink.mp3?v=20260916-14");
+[diceRollSound,ceramicClinkSound].forEach(sound=>sound.preload="auto");
 function playDiceSound(){
-  window.clearTimeout(playDiceSound.stopTimer);
-  diceBowlSound.pause();diceBowlSound.currentTime=0;diceBowlSound.volume=.82;diceBowlSound.playbackRate=1.12;
-  diceBowlSound.play().catch(()=>{});
-  playDiceSound.stopTimer=window.setTimeout(()=>{diceBowlSound.pause();diceBowlSound.currentTime=0},1600);
+  [diceRollSound,ceramicClinkSound].forEach(sound=>{sound.pause();sound.currentTime=0});
+  diceRollSound.volume=.9;diceRollSound.playbackRate=1;
+  ceramicClinkSound.volume=.38;ceramicClinkSound.playbackRate=1.05;
+  diceRollSound.play().catch(()=>{});
+  ceramicClinkSound.play().catch(()=>{});
 }
 
 function scoreDice(values){
