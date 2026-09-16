@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#681817">
+  <meta name="description" content="六颗骰子落玉盘，来博一个中秋好彩头。">
+  <title>月下博饼｜中秋好运一掷</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<main>
+  <header class="topbar"><div class="brand"><span>博</span><strong>月下博饼</strong></div><div class="date">乙巳年 · 仲秋</div></header>
+  <section class="hero">
+    <div class="intro"><p class="eyebrow">MOONLIGHT BO BING</p><h1>今宵月满<br><em>博个好彩</em></h1><p class="lede">六子落玉盘，一掷定好彩。<br>点击按钮，听一场属于中秋的清脆回响。</p><div class="legend"><span>闽南中秋传统民俗</span><i></i><span>六骰雅玩</span></div></div>
+    <div class="game" id="game" aria-live="polite">
+      <div class="moon" id="moon"></div>
+      <div class="bowl-wrap"><img class="bowl-image bowl-front" src="./bobing-bowl.jpg" alt="红色花纹博饼瓷碗"><img class="bowl-image bowl-top" src="./bobing-bowl-top.jpg" alt="俯视红色花纹博饼瓷碗"><div class="dice-stage" id="dice-stage"></div></div>
+      <div class="result" id="result"><span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p></div>
+      <button id="roll" class="roll-btn"><span>开始博饼</span><b>掷</b></button><small>点击按钮或按空格键</small>
+    </div>
+  </section>
+  <section class="rules" aria-labelledby="rules-title">
+    <div class="rules-head"><p>HOW TO PLAY</p><h2 id="rules-title">传统博饼规则</h2><span>六颗骰子落定，对照红四与相同点数组合判定彩头</span></div>
+    <div class="rule-grid" id="rule-grid"></div>
+    <p class="rules-note">各地博饼细则略有差异，本页面采用常见的闽南六骰玩法</p>
+  </section>
+  <footer><span>海上生明月</span><i>✦</i><span>天涯共此时</span></footer>
+</main>
+<script src="./script.js"></script>
+</body>
+</html>
