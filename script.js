@@ -3,33 +3,13 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-let audioContext;
+const diceBowlSound=new Audio("./dice-bowl-source.mp3?v=20260916-13");
+diceBowlSound.preload="auto";
 function playDiceSound(){
-  const AudioCtx=window.AudioContext||window.webkitAudioContext;
-  if(!AudioCtx)return;
-  audioContext=audioContext||new AudioCtx();
-  if(audioContext.state==="suspended")audioContext.resume();
-  const start=audioContext.currentTime;
-  const master=audioContext.createGain();
-  master.gain.setValueAtTime(.34,start);
-  master.gain.exponentialRampToValueAtTime(.018,start+1.48);
-  master.connect(audioContext.destination);
-  const noise=audioContext.createBuffer(1,Math.floor(audioContext.sampleRate*.075),audioContext.sampleRate);
-  const data=noise.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,3);
-  for(let i=0;i<21;i++){
-    const time=start+.025+i*.064+Math.random()*.03;
-    const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();
-    source.buffer=noise;filter.type="bandpass";filter.frequency.value=1900+Math.random()*2600;filter.Q.value=3.8+Math.random()*4;
-    gain.gain.setValueAtTime(.13+Math.random()*.13,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.055);
-    source.connect(filter);filter.connect(gain);gain.connect(master);source.start(time);source.stop(time+.07);
-  }
-  [1.24,1.32,1.4].forEach((offset,index)=>{
-    const time=start+offset,osc=audioContext.createOscillator(),gain=audioContext.createGain();
-    osc.type="sine";osc.frequency.setValueAtTime(2200-index*260,time);osc.frequency.exponentialRampToValueAtTime(620-index*80,time+.075);
-    gain.gain.setValueAtTime(.17-index*.025,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.095);
-    const resonator=audioContext.createBiquadFilter();resonator.type="bandpass";resonator.frequency.value=2800-index*300;resonator.Q.value=5;
-    osc.connect(resonator);resonator.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.1);
-  });
+  window.clearTimeout(playDiceSound.stopTimer);
+  diceBowlSound.pause();diceBowlSound.currentTime=0;diceBowlSound.volume=.82;diceBowlSound.playbackRate=1.12;
+  diceBowlSound.play().catch(()=>{});
+  playDiceSound.stopTimer=window.setTimeout(()=>{diceBowlSound.pause();diceBowlSound.currentTime=0},1600);
 }
 
 function scoreDice(values){
@@ -63,10 +43,11 @@ function finish(){
 }
 function roll(){
   if(rolling||resetting)return;
+  playDiceSound();
   result.className="result";result.innerHTML="<span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p>";
-  if(topView){rolling=true;playDiceSound();updateState();finish();return}
+  if(topView){rolling=true;updateState();finish();return}
   resetting=true;updateState();
-  window.setTimeout(()=>{resetting=false;rolling=true;topView=true;playDiceSound();updateState();finish()},80);
+  window.setTimeout(()=>{resetting=false;rolling=true;topView=true;updateState();finish()},80);
 }
 function miniDie(value){return `<i class="mini-die mini-${value}">${Array.from({length:value},()=>"<b></b>").join("")}</i>`}
 const rules=[

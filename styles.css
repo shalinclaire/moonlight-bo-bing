@@ -143,13 +143,20 @@ main:after{transform:rotate(90deg)}
 }
 
 /* v11：右上角十字替换为骰子图标 */
-main:before{content:"⚅"!important;width:auto!important;height:auto!important;display:block;background:none!important;border:0!important;border-radius:0!important;color:#fff1ce;font:400 34px/1 Arial,sans-serif;box-shadow:none!important;transform:rotate(8deg)!important;top:112px!important;right:8%!important}
+main:before{display:none!important}
 main:after{display:none!important}
 @media(max-width:800px){main:before{width:32px!important;height:32px!important;font-size:21px!important;top:92px!important;right:7%!important}}
 
 /* v12：八字标题保留明显空格，并在窄屏继续缩小 */
 @media(max-width:800px){.intro h1{font-size:clamp(27px,7.3vw,33px)!important;letter-spacing:.015em!important}.intro h1 em{margin-left:0!important}}
 @media(max-width:360px){.intro h1{font-size:26px!important}}
+
+/* v13：标题分组留距，六点骰子紧跟标题且无红框 */
+.intro h1{display:flex;align-items:center;justify-content:center;gap:.3em;white-space:nowrap}
+.intro h1 em{margin-left:.26em!important}
+.title-die{flex:0 0 auto;width:.7em;height:.7em;margin-left:.06em;padding:.11em;border:0;border-radius:.13em;background:#fff1ce;display:grid;grid-template:repeat(3,1fr)/repeat(2,1fr);gap:.07em;transform:rotate(7deg);box-shadow:0 .08em .18em rgba(71,0,4,.2)}
+.title-die b{width:.11em;height:.11em;min-width:3px;min-height:3px;border-radius:50%;background:#b31318;place-self:center}
+@media(max-width:800px){.intro h1{gap:.22em}.intro h1 em{margin-left:.18em!important}.title-die{width:.78em;height:.78em}}
 
 /* v7：碗与骰子作为整体下移，避开上方背景文案 */
 .game .bowl-wrap{margin-top:82px!important}
