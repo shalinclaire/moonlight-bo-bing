@@ -3,15 +3,12 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-const diceRollSound=new Audio("./dice-roll-continuous.mp3?v=20260916-14");
-const ceramicClinkSound=new Audio("./ceramic-bowl-clink.mp3?v=20260916-14");
-[diceRollSound,ceramicClinkSound].forEach(sound=>sound.preload="auto");
+const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-15");
+diceFlipSound.preload="auto";
 function playDiceSound(){
-  [diceRollSound,ceramicClinkSound].forEach(sound=>{sound.pause();sound.currentTime=0});
-  diceRollSound.volume=.9;diceRollSound.playbackRate=1;
-  ceramicClinkSound.volume=.38;ceramicClinkSound.playbackRate=1.05;
-  diceRollSound.play().catch(()=>{});
-  ceramicClinkSound.play().catch(()=>{});
+  diceFlipSound.pause();diceFlipSound.currentTime=0;
+  diceFlipSound.volume=1;diceFlipSound.playbackRate=1.12;
+  diceFlipSound.play().catch(()=>{});
 }
 
 function scoreDice(values){
@@ -41,7 +38,7 @@ function updateState(){
   renderDice();
 }
 function finish(){
-  window.setTimeout(()=>{dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},1450);
+  window.setTimeout(()=>{dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},2800);
 }
 function roll(){
   if(rolling||resetting)return;
