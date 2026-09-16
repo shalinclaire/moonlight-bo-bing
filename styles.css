@@ -104,3 +104,13 @@ main:after{transform:rotate(90deg)}
 .bowl-image{inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom}
 .game:not(.top-view) .bowl-front,.bowl-top{bottom:0}
 @media(max-width:430px){.bowl-image{left:0;width:100%}}
+
+/* 碗和骰子使用独立前景层，避免被 hero/game 的下边界覆盖 */
+.hero,.game,.bowl-wrap{overflow:visible}
+.game{isolation:isolate;z-index:3}
+.bowl-wrap{flex:0 0 480px;isolation:isolate}
+.bowl-image{top:0!important;right:0!important;bottom:auto!important;left:0!important;z-index:5!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center center!important}
+.dice-stage{z-index:6!important}
+.result,.roll-btn,.game small{position:relative;z-index:7}
+.rules{position:relative;z-index:1}
+@media(max-width:800px){.bowl-wrap{flex-basis:380px}}
