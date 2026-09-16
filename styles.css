@@ -162,3 +162,23 @@ main:after{transform:rotate(90deg)}
   .intro h1 em{margin-left:.14em!important}
 }
 @media(max-width:360px){.intro h1{font-size:29px!important;letter-spacing:0!important}}
+
+/* v10：压缩规则区与游戏区尾部空白，缩短移动端页面 */
+.game{min-height:auto!important;padding-bottom:24px}
+.hero{min-height:auto!important;padding-bottom:20px!important}
+.rules{padding-top:38px!important;padding-bottom:50px!important}
+.rule-grid{margin-top:22px!important;gap:8px!important}
+.rule-grid article{min-height:112px!important;padding:12px 9px!important}
+.rule-grid .mini-die{width:23px!important;height:23px!important;padding:3px!important;border-radius:5px!important}
+.rule-dice{grid-template-columns:repeat(3,23px)!important;gap:4px!important}
+.rule-grid article>strong{margin-top:7px!important;font-size:15px!important}
+.rule-grid article>span{margin-top:4px!important;font-size:10px!important}
+.rules-note{margin-top:14px!important}
+@media(max-width:800px){
+  .rules{padding:30px 14px 42px!important}
+  .rules-head p{margin-bottom:7px}
+  .rules-head h2{font-size:25px!important}
+  .rules-head>span{margin-top:8px;font-size:11px}
+  .rule-grid{margin-top:17px!important;gap:7px!important}
+  .rule-grid article{min-height:104px!important;padding:10px 6px!important}
+}
