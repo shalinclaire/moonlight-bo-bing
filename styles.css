@@ -162,6 +162,9 @@ main:after{display:none!important}
 .tossing .die.rolling{animation-duration:2.72s}
 @keyframes bowl-tumble{0%{transform:translateY(-150px) scale(1.05) rotateX(0) rotateY(0) rotateZ(0)}22%{transform:translate(22px,-46px) scale(.94) rotateX(410deg) rotateY(290deg) rotateZ(120deg)}48%{transform:translate(-13px,12px) scale(.9) rotateX(730deg) rotateY(620deg) rotateZ(240deg)}68%{transform:translate(11px,-15px) scale(.92) rotateX(900deg) rotateY(790deg) rotateZ(315deg)}84%{transform:translate(-5px,6px) scale(.9) rotateX(1030deg) rotateY(970deg) rotateZ(350deg)}94%{transform:translate(2px,-3px) scale(.9) rotateX(1080deg) rotateY(1080deg) rotateZ(360deg)}100%{transform:translate(0) scale(.9) var(--end)}}
 
+/* v17: compact roll synchronized with the user-supplied recording. */
+.tossing .die.rolling{animation-duration:1.85s}
+
 /* v7：碗与骰子作为整体下移，避开上方背景文案 */
 .game .bowl-wrap{margin-top:82px!important}
 .game{min-height:750px}

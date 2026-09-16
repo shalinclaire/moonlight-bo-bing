@@ -3,11 +3,11 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-16");
+const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-17");
 diceFlipSound.preload="auto";
 function playDiceSound(){
   diceFlipSound.pause();diceFlipSound.currentTime=0;
-  diceFlipSound.volume=1;diceFlipSound.playbackRate=1.12;
+  diceFlipSound.volume=1;diceFlipSound.playbackRate=1.5;
   diceFlipSound.play().catch(()=>{});
 }
 
@@ -28,7 +28,7 @@ function scoreDice(values){
 }
 function dots(value){return Array.from({length:value},()=>"<i></i>").join("")}
 function renderDice(){
-  stage.innerHTML=dice.map((value,index)=>`<div class="die-slot die-${index+1}"><div class="die ${rolling?"rolling":""}" style="--end:${endRotation[value]};--delay:${index*70}ms" aria-label="${value}点">${faceTransforms.map((transform,face)=>`<div class="face face-${face+1}" style="transform:${transform}">${dots(face+1)}</div>`).join("")}</div></div>`).join("");
+  stage.innerHTML=dice.map((value,index)=>`<div class="die-slot die-${index+1}"><div class="die ${rolling?"rolling":""}" style="--end:${endRotation[value]};--delay:${index*45}ms" aria-label="${value}点">${faceTransforms.map((transform,face)=>`<div class="face face-${face+1}" style="transform:${transform}">${dots(face+1)}</div>`).join("")}</div></div>`).join("");
 }
 function updateState(){
   game.className=`game ${topView?"top-view":""} ${rolling?"tossing":""}`;
@@ -38,7 +38,7 @@ function updateState(){
   renderDice();
 }
 function finish(){
-  window.setTimeout(()=>{const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},2800);
+  window.setTimeout(()=>{const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},2120);
 }
 function beginToss(){dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);rolling=true;updateState();finish()}
 function roll(){
