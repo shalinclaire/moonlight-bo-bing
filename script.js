@@ -3,7 +3,7 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-15");
+const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-16");
 diceFlipSound.preload="auto";
 function playDiceSound(){
   diceFlipSound.pause();diceFlipSound.currentTime=0;
@@ -38,15 +38,16 @@ function updateState(){
   renderDice();
 }
 function finish(){
-  window.setTimeout(()=>{dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},2800);
+  window.setTimeout(()=>{const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState()},2800);
 }
+function beginToss(){dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);rolling=true;updateState();finish()}
 function roll(){
   if(rolling||resetting)return;
   playDiceSound();
   result.className="result";result.innerHTML="<span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p>";
-  if(topView){rolling=true;updateState();finish();return}
+  if(topView){beginToss();return}
   resetting=true;updateState();
-  window.setTimeout(()=>{resetting=false;rolling=true;topView=true;updateState();finish()},80);
+  window.setTimeout(()=>{resetting=false;topView=true;beginToss()},80);
 }
 function miniDie(value){return `<i class="mini-die mini-${value}">${Array.from({length:value},()=>"<b></b>").join("")}</i>`}
 const rules=[
