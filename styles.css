@@ -154,3 +154,11 @@ main:after{transform:rotate(90deg)}
 .game-spacer{width:100%;pointer-events:none}
 .game .bowl-wrap{margin-top:0!important}
 @media(min-width:801px){.game-spacer{height:110px!important;flex-basis:110px!important}}
+
+/* v9：手机端主标题八字单行显示 */
+@media(max-width:800px){
+  .intro h1{font-size:clamp(30px,8.2vw,36px)!important;letter-spacing:.025em!important;white-space:nowrap;line-height:1.15}
+  .intro h1 br{display:none!important}
+  .intro h1 em{margin-left:.14em!important}
+}
+@media(max-width:360px){.intro h1{font-size:29px!important;letter-spacing:0!important}}
