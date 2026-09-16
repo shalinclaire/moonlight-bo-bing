@@ -141,3 +141,11 @@ main:after{transform:rotate(90deg)}
   .top-view .die-5{left:49%;top:50%}
   .top-view .die-6{left:57%;top:55%}
 }
+
+/* v7：碗与骰子作为整体下移，避开上方背景文案 */
+.game .bowl-wrap{margin-top:82px!important}
+.game{min-height:750px}
+@media(max-width:800px){
+  .game .bowl-wrap{margin-top:96px!important}
+  .game{min-height:720px}
+}
