@@ -3,11 +3,12 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
-const diceFlipSound=new Audio("./dice-flip-user.mp3?v=20260916-17");
+const diceFlipSound=new Audio("./dice-flip-trimmed.mp3?v=20260916-18");
 diceFlipSound.preload="auto";
+diceFlipSound.load();
 function playDiceSound(){
   diceFlipSound.pause();diceFlipSound.currentTime=0;
-  diceFlipSound.volume=1;diceFlipSound.playbackRate=1.5;
+  diceFlipSound.volume=1;diceFlipSound.playbackRate=1.15;
   diceFlipSound.play().catch(()=>{});
 }
 
