@@ -149,3 +149,8 @@ main:after{transform:rotate(90deg)}
   .game .bowl-wrap{margin-top:96px!important}
   .game{min-height:720px}
 }
+
+/* v8：整个游戏区由独立间隔下推，碗、骰子、结果和按钮同步移动 */
+.game-spacer{width:100%;pointer-events:none}
+.game .bowl-wrap{margin-top:0!important}
+@media(min-width:801px){.game-spacer{height:110px!important;flex-basis:110px!important}}
