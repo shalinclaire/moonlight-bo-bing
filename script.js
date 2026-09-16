@@ -3,6 +3,37 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 
+let audioContext;
+function playDiceSound(){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return;
+  audioContext=audioContext||new AudioCtx();
+  if(audioContext.state==="suspended")audioContext.resume();
+  const start=audioContext.currentTime;
+  const master=audioContext.createGain();
+  master.gain.setValueAtTime(.24,start);
+  master.gain.exponentialRampToValueAtTime(.025,start+1.45);
+  master.connect(audioContext.destination);
+  for(let i=0;i<18;i++){
+    const time=start+.04+i*.073+Math.random()*.035;
+    const osc=audioContext.createOscillator();
+    const gain=audioContext.createGain();
+    osc.type=i%3===0?"triangle":"sine";
+    osc.frequency.setValueAtTime(420+Math.random()*1050,time);
+    osc.frequency.exponentialRampToValueAtTime(150+Math.random()*280,time+.055);
+    gain.gain.setValueAtTime(.0001,time);
+    gain.gain.exponentialRampToValueAtTime(.18+Math.random()*.15,time+.006);
+    gain.gain.exponentialRampToValueAtTime(.0001,time+.07);
+    osc.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.08);
+  }
+  [1.24,1.32,1.4].forEach((offset,index)=>{
+    const time=start+offset,osc=audioContext.createOscillator(),gain=audioContext.createGain();
+    osc.type="triangle";osc.frequency.setValueAtTime(520-index*90,time);osc.frequency.exponentialRampToValueAtTime(120,time+.1);
+    gain.gain.setValueAtTime(.22-index*.04,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.13);
+    osc.connect(gain);gain.connect(master);osc.start(time);osc.stop(time+.14);
+  });
+}
+
 function scoreDice(values){
   const counts=Array(7).fill(0);values.forEach(n=>counts[n]++);
   if(counts[4]===4&&counts[1]===2)return["状元插金花","花中魁首，鸿运登峰！"];
@@ -35,9 +66,9 @@ function finish(){
 function roll(){
   if(rolling||resetting)return;
   result.className="result";result.innerHTML="<span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p>";
-  if(topView){rolling=true;updateState();finish();return}
+  if(topView){rolling=true;playDiceSound();updateState();finish();return}
   resetting=true;updateState();
-  window.setTimeout(()=>{resetting=false;rolling=true;topView=true;updateState();finish()},80);
+  window.setTimeout(()=>{resetting=false;rolling=true;topView=true;playDiceSound();updateState();finish()},80);
 }
 function miniDie(value){return `<i class="mini-die mini-${value}">${Array.from({length:value},()=>"<b></b>").join("")}</i>`}
 const rules=[

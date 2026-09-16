@@ -142,6 +142,11 @@ main:after{transform:rotate(90deg)}
   .top-view .die-6{left:57%;top:55%}
 }
 
+/* v11：右上角十字替换为骰子图标 */
+main:before{content:"⚄"!important;width:38px!important;height:38px!important;display:grid;place-items:center;background:#fff1ce!important;border:1px solid rgba(255,235,190,.9)!important;border-radius:8px!important;color:#a80d12;font:700 25px/1 Arial,sans-serif;box-shadow:0 5px 14px rgba(71,0,4,.24)!important;transform:rotate(10deg)!important;top:112px!important;right:8%!important}
+main:after{display:none!important}
+@media(max-width:800px){main:before{width:32px!important;height:32px!important;font-size:21px!important;top:92px!important;right:7%!important}}
+
 /* v7：碗与骰子作为整体下移，避开上方背景文案 */
 .game .bowl-wrap{margin-top:82px!important}
 .game{min-height:750px}
