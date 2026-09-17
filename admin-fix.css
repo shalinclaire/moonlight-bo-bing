@@ -1,0 +1,2 @@
+/* Ensure login and dashboard layers respect the native hidden state on all mobile browsers. */
+[hidden]{display:none!important}
