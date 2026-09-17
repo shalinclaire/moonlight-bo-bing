@@ -7,11 +7,11 @@
   <meta name="description" content="六颗骰子落玉盘，来博一个中秋好彩头。">
   <title>月下博饼｜中秋好运一掷</title>
   <link rel="preload" href="./dice-flip-trimmed.mp3?v=20260916-18" as="audio" type="audio/mpeg">
-  <link rel="stylesheet" href="./styles.css?v=20260916-18">
+  <link rel="stylesheet" href="./styles.css?v=20260917-19">
 </head>
 <body>
 <main>
-  <header class="topbar"><div class="brand"><span>博</span><strong>月下博饼</strong></div><div class="date">乙巳年 · 仲秋</div></header>
+  <header class="topbar"><div class="brand"><span>博</span><strong>月下博饼</strong></div><button class="user-chip" id="user-chip" type="button"><span>参与者</span><strong id="user-name">填写昵称</strong></button></header>
   <section class="hero">
     <div class="intro"><p class="eyebrow">MOONLIGHT BO BING</p><h1><span>今宵月满</span><em>博个好彩</em><i class="title-die" aria-label="六点骰子"><b></b><b></b><b></b><b></b><b></b><b></b></i></h1><p class="lede">六子落玉盘，一掷定好彩。<br>点击按钮，听一场属于中秋的清脆回响。</p><div class="legend"><span>闽南中秋传统民俗</span><i></i><span>六骰雅玩</span></div></div>
     <div aria-hidden="true" class="game-spacer" style="height:140px;flex:0 0 140px"></div>
@@ -29,6 +29,17 @@
   </section>
   <footer><span>海上生明月</span><i>✦</i><span>天涯共此时</span></footer>
 </main>
-<script src="./script.js?v=20260916-18"></script>
+<div class="name-modal" id="name-modal" role="dialog" aria-modal="true" aria-labelledby="name-title">
+  <form class="name-card" id="name-form">
+    <span class="name-kicker">参与登记</span>
+    <h2 id="name-title">留下你的姓名或昵称</h2>
+    <p>用于记录本次博饼结果，填写一次后会保存在当前设备。</p>
+    <label for="nickname">姓名或昵称</label>
+    <input id="nickname" name="nickname" maxlength="30" autocomplete="name" placeholder="请输入姓名或昵称" required>
+    <button type="submit">确认并开始博饼</button>
+  </form>
+</div>
+<div class="record-toast" id="record-toast" role="status"></div>
+<script src="./script.js?v=20260917-19"></script>
 </body>
 </html>
