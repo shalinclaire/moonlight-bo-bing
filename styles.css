@@ -152,6 +152,13 @@ main:after{transform:rotate(90deg)}
 .record-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));z-index:110;transform:translate(-50%,18px);padding:9px 16px;border-radius:999px;background:rgba(40,0,3,.88);color:#fff1ce;font-size:12px;letter-spacing:.06em;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}.record-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:800px){.topbar{gap:10px}.brand{gap:9px}.brand strong{font-size:15px}.user-chip{padding:6px 11px}.user-chip span{display:none}.name-card{padding:28px 22px 23px}}
 
+/* v20：开始按钮下方的实时中奖滚动榜 */
+.winner-board{width:min(360px,86vw);margin:16px auto 0;position:relative;z-index:4;border:1px solid rgba(244,210,137,.3);border-radius:12px;background:rgba(80,0,7,.28);overflow:hidden;box-shadow:inset 0 1px rgba(255,255,255,.05)}
+.winner-board header{height:36px;padding:0 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(244,210,137,.17)}.winner-board header strong{color:#f0cf83;font-size:12px;letter-spacing:.16em}.winner-board header span{color:rgba(255,241,206,.44);font-size:9px;letter-spacing:.12em}
+.winner-window{height:90px;overflow:hidden}.winner-list{will-change:transform}.winner-list.scrolling{animation:winner-scroll var(--scroll-time,18s) linear infinite}.winner-row{height:30px;padding:0 13px;display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:8px;color:rgba(255,241,220,.75);font-size:11px}.winner-row time{color:rgba(255,241,220,.4);font-family:Arial,sans-serif}.winner-row b{font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.winner-row strong{color:#f3d283;font-size:11px;font-weight:500;white-space:nowrap}.winner-empty{height:90px;margin:0;display:grid;place-items:center;color:rgba(255,241,220,.42);font-size:11px;letter-spacing:.13em}
+@keyframes winner-scroll{0%,8%{transform:translateY(0)}92%,100%{transform:translateY(-50%)}}
+@media(max-width:800px){.winner-board{margin-top:13px}.winner-window{height:84px}.winner-row{height:28px}}
+
 /* v11：右上角十字替换为骰子图标 */
 main:before{display:none!important}
 main:after{display:none!important}

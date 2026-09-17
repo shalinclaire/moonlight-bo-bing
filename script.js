@@ -3,9 +3,10 @@ const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180d
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
 const nameModal=document.querySelector("#name-modal"),nameForm=document.querySelector("#name-form"),nameInput=document.querySelector("#nickname"),userChip=document.querySelector("#user-chip"),userName=document.querySelector("#user-name"),recordToast=document.querySelector("#record-toast");
+const winnerList=document.querySelector("#winner-list");
 const SUPABASE_URL="https://qemcatfhcmnrckufsjiz.supabase.co";
 const SUPABASE_KEY="sb_publishable_g0IEeggLJZtytr-vHQALHg_WQKk31b_";
-const PAGE_VERSION="20260917-19";
+const PAGE_VERSION="20260917-20";
 let currentNickname=(localStorage.getItem("bobing_nickname")||"").trim();
 let deviceId=localStorage.getItem("bobing_device_id");
 function makeUuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==="x"?r:(r&3|8)).toString(16)})}
@@ -22,11 +23,20 @@ function playDiceSound(){
 function showToast(text){recordToast.textContent=text;recordToast.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>recordToast.classList.remove("show"),2200)}
 function openNameModal(){nameInput.value=currentNickname;nameModal.classList.add("open");setTimeout(()=>nameInput.focus(),80)}
 function updateParticipant(){userName.textContent=currentNickname||"填写昵称";if(!currentNickname)openNameModal()}
+function safeText(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+function renderWinners(rows){
+  if(!rows.length){winnerList.className="winner-list";winnerList.innerHTML='<p class="winner-empty">等待第一份好彩</p>';return}
+  const markup=rows.map(row=>{const time=new Date(row.created_at).toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit",hour12:false});return `<div class="winner-row"><time>${time}</time><b>${safeText(row.nickname)}</b><strong>${safeText(row.prize)}</strong></div>`}).join("");
+  winnerList.className=`winner-list ${rows.length>3?"scrolling":""}`;winnerList.style.setProperty("--scroll-time",`${Math.max(12,rows.length*2.4)}s`);winnerList.innerHTML=rows.length>3?markup+markup:markup;
+}
+async function loadWinners(){
+  try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_recent_bobing_results`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_limit:20})});if(!response.ok)throw new Error(`HTTP ${response.status}`);renderWinners(await response.json())}catch(error){console.error("读取中奖记录失败",error)}
+}
 async function saveResult(values,prize){
   try{
     const response=await fetch(`${SUPABASE_URL}/rest/v1/bobing_results`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({nickname:currentNickname,device_id:deviceId,dice:values,prize:prize[0],message:prize[1],page_version:PAGE_VERSION})});
     if(!response.ok)throw new Error(`HTTP ${response.status}`);
-    showToast("本次博饼结果已记录");
+    showToast("本次博饼结果已记录");if(prize[0]!=="再接再厉")void loadWinners();
   }catch(error){console.error("保存博饼结果失败",error);showToast("结果暂未上传，请检查网络")}
 }
 
@@ -81,3 +91,5 @@ nameForm.addEventListener("submit",event=>{event.preventDefault();const value=na
 window.addEventListener("keydown",event=>{if(event.code==="Space"&&!/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)){event.preventDefault();roll()}});
 updateState();
 updateParticipant();
+void loadWinners();
+setInterval(loadWinners,30000);

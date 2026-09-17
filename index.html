@@ -7,7 +7,7 @@
   <meta name="description" content="六颗骰子落玉盘，来博一个中秋好彩头。">
   <title>月下博饼｜中秋好运一掷</title>
   <link rel="preload" href="./dice-flip-trimmed.mp3?v=20260916-18" as="audio" type="audio/mpeg">
-  <link rel="stylesheet" href="./styles.css?v=20260917-19">
+  <link rel="stylesheet" href="./styles.css?v=20260917-20">
 </head>
 <body>
 <main>
@@ -20,6 +20,10 @@
       <div class="bowl-wrap"><img class="bowl-image bowl-front" src="./bobing-bowl-transparent.webp?v=20260916-5" alt="红色花纹博饼瓷碗"><img class="bowl-image bowl-top" src="./bobing-bowl-top-transparent.webp?v=20260916-5" alt="俯视红色花纹博饼瓷碗"><div class="dice-stage" id="dice-stage"></div></div>
       <div class="result" id="result"><span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p></div>
       <button id="roll" class="roll-btn"><span>开始博饼</span><b>掷</b></button><small>点击按钮或按空格键</small>
+      <section class="winner-board" aria-label="最新中奖记录">
+        <header><strong>最新中奖</strong><span>实时更新</span></header>
+        <div class="winner-window"><div class="winner-list" id="winner-list"><p class="winner-empty">等待第一份好彩</p></div></div>
+      </section>
     </div>
   </section>
   <section class="rules" aria-labelledby="rules-title">
@@ -40,6 +44,6 @@
   </form>
 </div>
 <div class="record-toast" id="record-toast" role="status"></div>
-<script src="./script.js?v=20260917-19"></script>
+<script src="./script.js?v=20260917-20"></script>
 </body>
 </html>
