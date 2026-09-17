@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#760b12">
+  <meta name="robots" content="noindex,nofollow">
+  <title>博饼活动统计后台</title>
+  <link rel="stylesheet" href="./admin.css?v=20260917-22">
+</head>
+<body>
+  <section class="login" id="login-panel">
+    <form class="login-card" id="login-form">
+      <span>MOONLIGHT BO BING</span>
+      <h1>博饼统计后台</h1>
+      <p>仅限已授权管理员登录</p>
+      <label for="email">管理员邮箱</label>
+      <input id="email" type="email" autocomplete="username" required placeholder="请输入邮箱">
+      <label for="password">密码</label>
+      <input id="password" type="password" autocomplete="current-password" required placeholder="请输入密码">
+      <button type="submit">登录后台</button>
+      <div class="form-message" id="login-message" role="status"></div>
+    </form>
+  </section>
+
+  <main class="dashboard" id="dashboard" hidden>
+    <header class="topbar">
+      <div><span>月下博饼</span><h1>活动数据统计</h1></div>
+      <div class="actions"><button id="refresh" type="button">刷新数据</button><button id="logout" class="ghost" type="button">退出登录</button></div>
+    </header>
+
+    <section class="filters" aria-label="筛选条件">
+      <label>开始日期<input id="date-start" type="date"></label>
+      <label>结束日期<input id="date-end" type="date"></label>
+      <label>店铺编码<select id="shop-filter"><option value="">全部店铺</option></select></label>
+      <label>奖项<select id="prize-filter"><option value="">全部奖项</option></select></label>
+      <div class="filter-actions"><button id="reset" class="ghost" type="button">重置</button><button id="export" type="button">导出当前结果 CSV</button></div>
+    </section>
+
+    <section class="cards">
+      <article><span>博饼总次数</span><strong id="total-count">0</strong></article>
+      <article><span>中奖次数</span><strong id="winner-count">0</strong></article>
+      <article><span>参与人数</span><strong id="player-count">0</strong></article>
+      <article><span>中奖率</span><strong id="winner-rate">0%</strong></article>
+    </section>
+
+    <section class="prize-panel">
+      <div class="section-title"><h2>奖项分布</h2><span id="result-summary">共 0 条记录</span></div>
+      <div class="prize-grid" id="prize-grid"></div>
+    </section>
+
+    <section class="records">
+      <div class="section-title"><h2>博饼记录</h2><span>按时间倒序</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>时间</th><th>姓名/昵称</th><th>店铺编码</th><th>奖项</th><th>骰子</th><th>祝福语</th></tr></thead>
+          <tbody id="record-body"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="empty-state" hidden>当前筛选条件下暂无记录</p>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="./admin.js?v=20260917-22"></script>
+</body>
+</html>
