@@ -6,7 +6,7 @@ const nameModal=document.querySelector("#name-modal"),nameForm=document.querySel
 const winnerList=document.querySelector("#winner-list");
 const SUPABASE_URL="https://qemcatfhcmnrckufsjiz.supabase.co";
 const SUPABASE_KEY="sb_publishable_g0IEeggLJZtytr-vHQALHg_WQKk31b_";
-const PAGE_VERSION="20260917-21";
+const PAGE_VERSION="20260920-24";
 let currentNickname=(localStorage.getItem("bobing_nickname")||"").trim();
 let currentShopCode=(localStorage.getItem("bobing_shop_code")||"").trim();
 let deviceId=localStorage.getItem("bobing_device_id");
@@ -33,13 +33,12 @@ function renderWinners(rows){
 async function loadWinners(){
   try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_recent_bobing_results`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_limit:20})});if(!response.ok)throw new Error(`HTTP ${response.status}`);renderWinners(await response.json())}catch(error){console.error("读取中奖记录失败",error)}
 }
-async function saveResult(values,prize){
-  try{
-    const response=await fetch(`${SUPABASE_URL}/rest/v1/bobing_results`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({nickname:currentNickname,shop_code:currentShopCode,device_id:deviceId,dice:values,prize:prize[0],message:prize[1],page_version:PAGE_VERSION})});
-    if(!response.ok)throw new Error(`HTTP ${response.status}`);
-    showToast("本次博饼结果已记录");if(prize[0]!=="再接再厉")void loadWinners();
-  }catch(error){console.error("保存博饼结果失败",error);showToast("结果暂未上传，请检查网络")}
+async function requestPlay(){
+  const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/play_bobing`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_nickname:currentNickname,p_shop_code:currentShopCode,p_device_id:deviceId,p_page_version:PAGE_VERSION})});
+  if(!response.ok)throw new Error(`HTTP ${response.status}`);
+  return response.json();
 }
+function shuffle(values){const copy=[...values];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}return copy}
 
 function scoreDice(values){
   const counts=Array(7).fill(0);values.forEach(n=>counts[n]++);
@@ -67,10 +66,14 @@ function updateState(){
   button.innerHTML=`<span>${resetting?"镜头转换中":rolling?"好彩翻滚中":"开始博饼"}</span><b>${rolling||resetting?"···":"掷"}</b>`;
   renderDice();
 }
-function finish(){
-  window.setTimeout(()=>{const prize=scoreDice(dice);rolling=false;result.className="result show";result.innerHTML=`<span>${currentNickname} · 本局彩头</span><strong>${prize[0]}</strong><p>${prize[1]}</p>`;updateState();void saveResult([...dice],prize)},2120);
+function finish(play,delay){
+  window.setTimeout(()=>{rolling=false;result.className="result show";const title=play.actual_prize==="未中奖"?"再接再厉":play.actual_prize;result.innerHTML=`<span>${currentNickname} · 本局彩头</span><strong>${safeText(title)}</strong><p>${safeText(play.message)}</p>`;updateState();showToast("本次博饼结果已记录");if(play.display_prize!=="再接再厉")void loadWinners()},delay);
 }
-function beginToss(){dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);rolling=true;updateState();finish()}
+async function beginToss(){
+  const started=Date.now();dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);rolling=true;updateState();
+  try{const play=await requestPlay();dice=shuffle(play.dice);finish(play,Math.max(280,2120-(Date.now()-started)))}
+  catch(error){console.error("博饼失败",error);rolling=false;updateState();result.className="result show";result.innerHTML="<span>网络提示</span><strong>暂未完成博饼</strong><p>请检查网络后重新尝试</p>";showToast("博饼失败，请稍后重试")}
+}
 function roll(){
   if(rolling||resetting)return;
   if(!currentNickname||!currentShopCode){openNameModal();return}
