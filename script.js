@@ -2,12 +2,13 @@ const faceTransforms=["rotateY(0deg) translateZ(29px)","rotateY(180deg) translat
 const endRotation={1:"rotateX(0deg) rotateY(0deg)",2:"rotateX(0deg) rotateY(180deg)",3:"rotateX(0deg) rotateY(-90deg)",4:"rotateX(0deg) rotateY(90deg)",5:"rotateX(-90deg) rotateY(0deg)",6:"rotateX(90deg) rotateY(0deg)"};
 let dice=[4,2,6,1,3,5],rolling=false,resetting=false,topView=false;
 const game=document.querySelector("#game"),stage=document.querySelector("#dice-stage"),result=document.querySelector("#result"),button=document.querySelector("#roll"),moon=document.querySelector("#moon");
-const nameModal=document.querySelector("#name-modal"),nameForm=document.querySelector("#name-form"),nameInput=document.querySelector("#nickname"),shopCodeInput=document.querySelector("#shop-code"),userChip=document.querySelector("#user-chip"),userName=document.querySelector("#user-name"),recordToast=document.querySelector("#record-toast");
+const nameModal=document.querySelector("#name-modal"),nameForm=document.querySelector("#name-form"),nameInput=document.querySelector("#nickname"),phoneInput=document.querySelector("#phone"),shopCodeInput=document.querySelector("#shop-code"),userChip=document.querySelector("#user-chip"),userName=document.querySelector("#user-name"),recordToast=document.querySelector("#record-toast");
 const winnerList=document.querySelector("#winner-list");
 const SUPABASE_URL="https://qemcatfhcmnrckufsjiz.supabase.co";
 const SUPABASE_KEY="sb_publishable_g0IEeggLJZtytr-vHQALHg_WQKk31b_";
-const PAGE_VERSION="20260920-24";
+const PAGE_VERSION="20260921-25";
 let currentNickname=(localStorage.getItem("bobing_nickname")||"").trim();
+let currentPhone=(localStorage.getItem("bobing_phone")||"").trim();
 let currentShopCode=(localStorage.getItem("bobing_shop_code")||"").trim();
 let deviceId=localStorage.getItem("bobing_device_id");
 function makeUuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==="x"?r:(r&3|8)).toString(16)})}
@@ -22,8 +23,8 @@ function playDiceSound(){
   diceFlipSound.play().catch(()=>{});
 }
 function showToast(text){recordToast.textContent=text;recordToast.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>recordToast.classList.remove("show"),2200)}
-function openNameModal(){nameInput.value=currentNickname;shopCodeInput.value=currentShopCode;nameModal.classList.add("open");setTimeout(()=>nameInput.focus(),80)}
-function updateParticipant(){userName.textContent=currentNickname||"填写信息";if(!currentNickname||!currentShopCode)openNameModal()}
+function openNameModal(){nameInput.value=currentNickname;phoneInput.value=currentPhone;shopCodeInput.value=currentShopCode;nameModal.classList.add("open");setTimeout(()=>nameInput.focus(),80)}
+function updateParticipant(){userName.textContent=currentNickname||"填写信息";if(!currentNickname||!/^1[3-9]\d{9}$/.test(currentPhone)||!currentShopCode)openNameModal()}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 function renderWinners(rows){
   if(!rows.length){winnerList.className="winner-list";winnerList.innerHTML='<p class="winner-empty">等待第一份好彩</p>';return}
@@ -34,7 +35,7 @@ async function loadWinners(){
   try{const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_recent_bobing_results`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_limit:20})});if(!response.ok)throw new Error(`HTTP ${response.status}`);renderWinners(await response.json())}catch(error){console.error("读取中奖记录失败",error)}
 }
 async function requestPlay(){
-  const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/play_bobing`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_nickname:currentNickname,p_shop_code:currentShopCode,p_device_id:deviceId,p_page_version:PAGE_VERSION})});
+  const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/play_bobing_v25`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({p_nickname:currentNickname,p_phone:currentPhone,p_shop_code:currentShopCode,p_device_id:deviceId,p_page_version:PAGE_VERSION})});
   if(!response.ok)throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
@@ -76,7 +77,7 @@ async function beginToss(){
 }
 function roll(){
   if(rolling||resetting)return;
-  if(!currentNickname||!currentShopCode){openNameModal();return}
+  if(!currentNickname||!/^1[3-9]\d{9}$/.test(currentPhone)||!currentShopCode){openNameModal();return}
   playDiceSound();
   result.className="result";result.innerHTML="<span>静候开博</span><strong>月圆 · 人团圆</strong><p>按下按钮，让骰子替你问一程好运</p>";
   if(topView){beginToss();return}
@@ -91,7 +92,7 @@ const rules=[
 document.querySelector("#rule-grid").innerHTML=rules.map(([name,desc,values])=>`<article><div class="rule-dice">${values.map(miniDie).join("")}</div><strong>${name}</strong><span>${desc}</span></article>`).join("");
 button.addEventListener("click",roll);
 userChip.addEventListener("click",openNameModal);
-nameForm.addEventListener("submit",event=>{event.preventDefault();const value=nameInput.value.trim(),shopCode=shopCodeInput.value.trim().toUpperCase();if(!value||!shopCode)return;currentNickname=value;currentShopCode=shopCode;localStorage.setItem("bobing_nickname",value);localStorage.setItem("bobing_shop_code",shopCode);nameModal.classList.remove("open");updateParticipant();showToast(`欢迎你，${value}`)});
+nameForm.addEventListener("submit",event=>{event.preventDefault();const value=nameInput.value.trim(),phone=phoneInput.value.replace(/\D/g,""),shopCode=shopCodeInput.value.trim().toUpperCase();if(!value||!/^1[3-9]\d{9}$/.test(phone)||!shopCode){phoneInput.setCustomValidity(/^1[3-9]\d{9}$/.test(phone)?"":"请输入正确的11位手机号码");phoneInput.reportValidity();return}phoneInput.setCustomValidity("");currentNickname=value;currentPhone=phone;currentShopCode=shopCode;localStorage.setItem("bobing_nickname",value);localStorage.setItem("bobing_phone",phone);localStorage.setItem("bobing_shop_code",shopCode);nameModal.classList.remove("open");updateParticipant();showToast(`欢迎你，${value}`)});
 window.addEventListener("keydown",event=>{if(event.code==="Space"&&!/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)){event.preventDefault();roll()}});
 updateState();
 updateParticipant();
