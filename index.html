@@ -7,7 +7,7 @@
   <meta name="description" content="六颗骰子落玉盘，来博一个中秋好彩头。">
   <title>月下博饼｜中秋好运一掷</title>
   <link rel="preload" href="./dice-flip-trimmed.mp3?v=20260916-18" as="audio" type="audio/mpeg">
-  <link rel="stylesheet" href="./styles.css?v=20260921-26">
+  <link rel="stylesheet" href="./styles.css?v=20260921-27">
 </head>
 <body>
 <main>
@@ -37,17 +37,15 @@
   <form class="name-card" id="name-form">
     <span class="name-kicker">参与登记</span>
     <h2 id="name-title">填写参与信息</h2>
-    <p>姓名与手机号仅用于活动统计，公开中奖榜只展示脱敏手机号。填写一次后会保存在当前设备。</p>
-    <label for="nickname">姓名或昵称</label>
-    <input id="nickname" name="nickname" maxlength="30" autocomplete="name" placeholder="请输入姓名或昵称" required>
-    <label for="phone">手机号码</label>
-    <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="11" pattern="1[3-9][0-9]{9}" placeholder="请输入11位手机号码" required>
+    <p>姓名、昵称或手机号任选一种填写，仅用于活动统计，公开中奖榜会自动脱敏。</p>
+    <label for="nickname">姓名、昵称或手机号</label>
+    <input id="nickname" name="nickname" maxlength="30" autocomplete="off" placeholder="请输入姓名、昵称或手机号" required>
     <label for="shop-code">店铺编码</label>
     <input id="shop-code" name="shop_code" maxlength="30" autocomplete="off" autocapitalize="characters" placeholder="请输入店铺编码" required>
     <button type="submit">确认并开始博饼</button>
   </form>
 </div>
 <div class="record-toast" id="record-toast" role="status"></div>
-<script src="./script.js?v=20260921-26"></script>
+<script src="./script.js?v=20260921-27"></script>
 </body>
 </html>
