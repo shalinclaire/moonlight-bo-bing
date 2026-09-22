@@ -6,9 +6,12 @@ const nameModal=document.querySelector("#name-modal"),nameForm=document.querySel
 const winnerList=document.querySelector("#winner-list");
 const SUPABASE_URL="https://qemcatfhcmnrckufsjiz.supabase.co";
 const SUPABASE_KEY="sb_publishable_g0IEeggLJZtytr-vHQALHg_WQKk31b_";
-const PAGE_VERSION="20260922-29";
-let currentNickname=(localStorage.getItem("bobing_nickname")||"").trim();
-let currentShopCode=(localStorage.getItem("bobing_shop_code")||"").trim();
+const PAGE_VERSION="20260922-30";
+let currentNickname="";
+let currentShopCode="";
+localStorage.removeItem("bobing_nickname");
+localStorage.removeItem("bobing_phone");
+localStorage.removeItem("bobing_shop_code");
 let deviceId=localStorage.getItem("bobing_device_id");
 function makeUuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==="x"?r:(r&3|8)).toString(16)})}
 if(!deviceId){deviceId=makeUuid();localStorage.setItem("bobing_device_id",deviceId)}
@@ -93,7 +96,7 @@ const rules=[
 document.querySelector("#rule-grid").innerHTML=rules.map(([name,desc,values])=>`<article><div class="rule-dice">${values.map(miniDie).join("")}</div><strong>${name}</strong><span>${desc}</span></article>`).join("");
 button.addEventListener("click",roll);
 userChip.addEventListener("click",openNameModal);
-nameForm.addEventListener("submit",event=>{event.preventDefault();const value=nameInput.value.trim(),shopCode=shopCodeInput.value.trim().toUpperCase();if(!value||!shopCode)return;currentNickname=value;currentShopCode=shopCode;localStorage.setItem("bobing_nickname",value);localStorage.removeItem("bobing_phone");localStorage.setItem("bobing_shop_code",shopCode);nameModal.classList.remove("open");updateParticipant();showToast(`欢迎你，${value}`)});
+nameForm.addEventListener("submit",event=>{event.preventDefault();const value=nameInput.value.trim(),shopCode=shopCodeInput.value.trim().toUpperCase();if(!value||!shopCode)return;currentNickname=value;currentShopCode=shopCode;nameModal.classList.remove("open");updateParticipant();showToast(`欢迎你，${value}`)});
 window.addEventListener("keydown",event=>{if(event.code==="Space"&&!/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)){event.preventDefault();roll()}});
 updateState();
 updateParticipant();
