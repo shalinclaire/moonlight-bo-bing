@@ -6,7 +6,7 @@ const nameModal=document.querySelector("#name-modal"),nameForm=document.querySel
 const winnerList=document.querySelector("#winner-list");
 const SUPABASE_URL="https://qemcatfhcmnrckufsjiz.supabase.co";
 const SUPABASE_KEY="sb_publishable_g0IEeggLJZtytr-vHQALHg_WQKk31b_";
-const PAGE_VERSION="20260921-27";
+const PAGE_VERSION="20260922-29";
 let currentNickname=(localStorage.getItem("bobing_nickname")||"").trim();
 let currentShopCode=(localStorage.getItem("bobing_shop_code")||"").trim();
 let deviceId=localStorage.getItem("bobing_device_id");
@@ -69,7 +69,7 @@ function updateState(){
   renderDice();
 }
 function finish(play,delay){
-  window.setTimeout(()=>{rolling=false;result.className="result show";const title=play.actual_prize==="未中奖"?"再接再厉":play.actual_prize;result.innerHTML=`<span>${currentNickname} · 本局彩头</span><strong>${safeText(title)}</strong><p>${safeText(play.message)}</p>`;updateState();showToast("本次博饼结果已记录");if(play.display_prize!=="再接再厉")void loadWinners()},delay);
+  window.setTimeout(()=>{rolling=false;result.className="result show";const soldOut=play.actual_prize==="奖品已领完",title=play.actual_prize==="未中奖"?"再接再厉":soldOut?play.original_prize:play.actual_prize,message=soldOut?`恭喜博中${play.original_prize}！`:play.message;result.innerHTML=`<span>${currentNickname} · 本局彩头</span><strong>${safeText(title)}</strong><p>${safeText(message)}</p>`;updateState();showToast("本次博饼结果已记录");if(play.display_prize!=="再接再厉")void loadWinners()},delay);
 }
 async function beginToss(){
   const started=Date.now();dice=Array.from({length:6},()=>Math.floor(Math.random()*6)+1);rolling=true;updateState();
